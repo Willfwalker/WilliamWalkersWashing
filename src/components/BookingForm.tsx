@@ -236,7 +236,7 @@ export default function BookingForm() {
                   <p className="mt-1 text-sm text-red-600">{errors.preferredTimes.message}</p>
                 )}
                 <p className="mt-1 text-xs text-gray-500">
-                  Please list a few time options that would work for you. We'll contact you to confirm the exact appointment time.
+                  Please list a few time options that would work for you. We&apos;ll contact you to confirm the exact appointment time.
                 </p>
               </div>
             </div>
