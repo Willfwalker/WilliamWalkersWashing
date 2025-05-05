@@ -7,7 +7,7 @@ export default function HeroSection() {
       <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
         <div className="max-w-3xl">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            Walker's Washing
+            Walker&apos;s Washing
           </h1>
           <p className="mt-6 text-xl max-w-3xl">
             Restore your vehicle to showroom quality with our professional detailing services.

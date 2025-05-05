@@ -4,7 +4,7 @@ import { services } from '@/utils/services';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
 export const metadata = {
-  title: 'Our Services | Walker\'s Washing',
+  title: "Our Services | Walker's Washing",
   description: 'Explore our Basic, Regular, and Premium detailing packages. Professional car cleaning services tailored to your needs.',
 };
 
@@ -18,7 +18,7 @@ export default function ServicesPage() {
             Our Detailing Services
           </h1>
           <p className="mt-4 text-xl text-blue-100 max-w-3xl mx-auto">
-            Choose from our three comprehensive packages designed to restore and maintain your vehicle's appearance.
+            Choose from our three comprehensive packages designed to restore and maintain your vehicle&apos;s appearance.
           </p>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function ServicesPage() {
               </div>
               <p className="text-lg text-gray-600 mb-6">{service.description}</p>
               <div className="mb-8">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">What's Included:</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">What&apos;s Included:</h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
                   {service.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start">

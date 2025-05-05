@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from 'react';
 import Link from 'next/link';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
@@ -28,7 +28,7 @@ export default function Navbar() {
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/" className="text-xl font-bold text-blue-600">
-                    Walker's Washing
+                    Walker&apos;s Washing
                   </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">

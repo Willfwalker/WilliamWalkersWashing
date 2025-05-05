@@ -1,8 +1,8 @@
-import Image from 'next/image';
+
 
 export const metadata = {
-  title: 'About Us | Walker\'s Washing',
-  description: 'Learn about Walker\'s Washing and our commitment to excellence in car care.',
+  title: "About Us | Walker's Washing",
+  description: "Learn about Walker's Washing and our commitment to excellence in car care.",
 };
 
 export default function AboutPage() {
@@ -12,7 +12,7 @@ export default function AboutPage() {
       <div className="bg-blue-700 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
-            About Walker's Washing
+            About Walker&apos;s Washing
           </h1>
           <p className="mt-4 text-xl text-blue-100 max-w-3xl mx-auto">
             Dedicated to excellence in automotive care since 2023.
@@ -28,7 +28,7 @@ export default function AboutPage() {
               Visit Us
             </h2>
             <p className="mt-4 text-lg text-gray-500 max-w-3xl mx-auto">
-              We're conveniently located and ready to serve you.
+              We&apos;re conveniently located and ready to serve you.
             </p>
           </div>
 
