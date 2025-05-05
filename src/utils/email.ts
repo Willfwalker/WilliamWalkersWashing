@@ -17,20 +17,46 @@ export type BookingData = {
 
 export async function sendBookingEmail(bookingData: BookingData): Promise<boolean> {
   try {
-    // For development purposes, we'll use a test account
-    // In production, you would use your actual SMTP credentials
-    const testAccount = await nodemailer.createTestAccount();
+    // Check if we have email credentials
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn('Email credentials not found. Using test account.');
+      // For development purposes, we'll use a test account
+      const testAccount = await nodemailer.createTestAccount();
 
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+
+      console.log('Using Ethereal test account:', testAccount.user);
+      return await sendWithTransporter(transporter, bookingData);
+    }
+
+    // Use configured email settings
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || 'smtp.ethereal.email',
+      host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '587'),
       secure: process.env.EMAIL_SECURE === 'true',
       auth: {
-        user: process.env.EMAIL_USER || testAccount.user,
-        pass: process.env.EMAIL_PASS || testAccount.pass,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
+    return await sendWithTransporter(transporter, bookingData);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+}
+
+async function sendWithTransporter(transporter: nodemailer.Transporter, bookingData: BookingData): Promise<boolean> {
+  try {
     const { name, email, phone, service, date, time, vehicle, message } = bookingData;
     const formattedDate = new Date(date).toLocaleDateString('en-US', {
       weekday: 'long',
@@ -58,12 +84,32 @@ export async function sendBookingEmail(bookingData: BookingData): Promise<boolea
         <p><strong>Year:</strong> ${vehicle.year}</p>
         ${message ? `<h2>Additional Notes</h2><p>${message}</p>` : ''}
       `,
+      text: `
+        New Booking Request
+
+        Service: ${service} Detail
+        Date: ${formattedDate}
+        Time: ${time}
+
+        Customer Information
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone}
+
+        Vehicle Information
+        Make: ${vehicle.make}
+        Model: ${vehicle.model}
+        Year: ${vehicle.year}
+        ${message ? `\nAdditional Notes\n${message}` : ''}
+      `,
     };
 
+    console.log('Sending email to:', mailOptions.to);
     const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.messageId);
 
-    // For development, log the test URL to view the email
-    if (process.env.NODE_ENV !== 'production') {
+    // For development, log the test URL to view the email if using Ethereal
+    if (info.messageId && transporter.options.host === 'smtp.ethereal.email') {
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     }
 
