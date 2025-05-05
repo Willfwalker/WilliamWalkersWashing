@@ -1,0 +1,12 @@
+This is a placeholder file. In a real project, you would add actual image files here:
+
+1. basic-detail.jpg - An image showing a basic car detailing service
+2. regular-detail.jpg - An image showing a regular car detailing service
+3. premium-detail.jpg - An image showing a premium car detailing service
+4. hero-bg.jpg - A background image for the hero section
+5. about-story.jpg - An image for the about page
+6. team-1.jpg, team-2.jpg, team-3.jpg - Images of team members
+7. testimonial-1.jpg, testimonial-2.jpg, testimonial-3.jpg - Images for testimonials
+8. map.jpg - A map image showing the business location
+
+For a production website, you would need to add these actual image files.
