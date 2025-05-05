@@ -13,6 +13,7 @@ type FormInputs = {
   email: string;
   phone: string;
   service: 'Basic' | 'Regular' | 'Premium';
+  preferredTimes: string;
   vehicleMake: string;
   vehicleModel: string;
   vehicleYear: string;
@@ -22,7 +23,7 @@ type FormInputs = {
 export default function BookingForm() {
   const searchParams = useSearchParams();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string>('');
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
@@ -45,15 +46,16 @@ export default function BookingForm() {
     }
   }, [searchParams, setValue]);
 
-  // Available time slots
-  const timeSlots = [
-    '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', 
-    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM'
-  ];
+
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    if (!selectedDate || !selectedTime) {
-      alert('Please select a date and time for your appointment');
+    if (!selectedDate) {
+      alert('Please select a date for your appointment');
+      return;
+    }
+
+    if (!data.preferredTimes) {
+      alert('Please enter your preferred times for the appointment');
       return;
     }
 
@@ -67,7 +69,7 @@ export default function BookingForm() {
         phone: data.phone,
         service: data.service,
         date: selectedDate,
-        time: selectedTime,
+        time: data.preferredTimes,
         vehicle: {
           make: data.vehicleMake,
           model: data.vehicleModel,
@@ -88,7 +90,7 @@ export default function BookingForm() {
         setSubmitStatus('success');
         reset();
         setSelectedDate(null);
-        setSelectedTime('');
+        setValue('preferredTimes', '');
       } else {
         setSubmitStatus('error');
       }
@@ -124,7 +126,7 @@ export default function BookingForm() {
               </p>
             </div>
           )}
-          
+
           <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Personal Information</h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -142,7 +144,7 @@ export default function BookingForm() {
                   <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
                 )}
               </div>
-              
+
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email Address *
@@ -150,7 +152,7 @@ export default function BookingForm() {
                 <input
                   type="email"
                   id="email"
-                  {...register('email', { 
+                  {...register('email', {
                     required: 'Email is required',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -163,7 +165,7 @@ export default function BookingForm() {
                   <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
                 )}
               </div>
-              
+
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                   Phone Number *
@@ -178,7 +180,7 @@ export default function BookingForm() {
                   <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
                 )}
               </div>
-              
+
               <div>
                 <label htmlFor="service" className="block text-sm font-medium text-gray-700">
                   Service Package *
@@ -200,7 +202,7 @@ export default function BookingForm() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Appointment Details</h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -218,28 +220,28 @@ export default function BookingForm() {
                   required
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Preferred Time *
+                <label htmlFor="preferredTimes" className="block text-sm font-medium text-gray-700 mb-1">
+                  Preferred Times *
                 </label>
-                <select
-                  value={selectedTime}
-                  onChange={(e) => setSelectedTime(e.target.value)}
+                <textarea
+                  id="preferredTimes"
+                  rows={3}
+                  {...register('preferredTimes', { required: 'Please enter your preferred times' })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select a time</option>
-                  {timeSlots.map((time) => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="e.g., Weekdays after 5pm, or Saturday mornings between 9-11am"
+                />
+                {errors.preferredTimes && (
+                  <p className="mt-1 text-sm text-red-600">{errors.preferredTimes.message}</p>
+                )}
+                <p className="mt-1 text-xs text-gray-500">
+                  Please list a few time options that would work for you. We'll contact you to confirm the exact appointment time.
+                </p>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Vehicle Information</h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -258,7 +260,7 @@ export default function BookingForm() {
                   <p className="mt-1 text-sm text-red-600">{errors.vehicleMake.message}</p>
                 )}
               </div>
-              
+
               <div>
                 <label htmlFor="vehicleModel" className="block text-sm font-medium text-gray-700">
                   Model *
@@ -274,7 +276,7 @@ export default function BookingForm() {
                   <p className="mt-1 text-sm text-red-600">{errors.vehicleModel.message}</p>
                 )}
               </div>
-              
+
               <div>
                 <label htmlFor="vehicleYear" className="block text-sm font-medium text-gray-700">
                   Year *
@@ -292,7 +294,7 @@ export default function BookingForm() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Additional Information</h2>
             <div>
@@ -308,7 +310,7 @@ export default function BookingForm() {
               />
             </div>
           </div>
-          
+
           <div className="flex justify-end">
             <button
               type="submit"

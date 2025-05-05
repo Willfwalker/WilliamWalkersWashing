@@ -6,7 +6,7 @@ export type BookingData = {
   phone: string;
   service: 'Basic' | 'Regular' | 'Premium';
   date: Date;
-  time: string;
+  time: string; // Now contains preferred times as a string
   vehicle: {
     make: string;
     model: string;
@@ -82,7 +82,7 @@ async function sendWithTransporter(
         <h1>New Booking Request</h1>
         <p><strong>Service:</strong> ${service} Detail</p>
         <p><strong>Date:</strong> ${formattedDate}</p>
-        <p><strong>Time:</strong> ${time}</p>
+        <p><strong>Preferred Times:</strong> ${time}</p>
         <h2>Customer Information</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
@@ -98,7 +98,7 @@ async function sendWithTransporter(
 
         Service: ${service} Detail
         Date: ${formattedDate}
-        Time: ${time}
+        Preferred Times: ${time}
 
         Customer Information
         Name: ${name}
